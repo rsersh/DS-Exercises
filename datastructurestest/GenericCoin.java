@@ -8,15 +8,16 @@ public class GenericCoin {
     
     private static boolean tails;
     private static boolean heads;
-    static Counter tailcounter = new Counter();
-    static Counter headcounter = new Counter();
+    Counter tailcounter = new Counter();
+    Counter headcounter = new Counter();
     
     public GenericCoin() {
         tails = true;
         heads = false;
+        System.out.println("Coin created, TAIL side up");
     }
     
-    public static void checkCoin() {
+    public void checkCoin() {
         if ((tails == true) && (heads == false)) {
             System.out.println("Tail side is UP.");
             tailcounter.increaseCount();
@@ -28,36 +29,76 @@ public class GenericCoin {
         }
     }
     
-    public static void coinToss() {
+    public String checkTailCounter() {
+        return tailcounter.toString();  
+    }
+    public String checkHeadCounter() {
+        return headcounter.toString();
+    }
+    
+    /*
+    public void coinToss() {
         Random r = new Random();
         tails = r.nextBoolean();
-        if (tails == true) { heads = false; }
-        else { heads = true; }
+        if (tails == true) { heads = false; tailcounter.increaseCount(); }
+        else { heads = true; headcounter.decreaseCount(); }
+    }
+     * 
+     */
+    
+    public void reset() {
+        int n = 0;
+        tailcounter.setCount(n);
+        headcounter.setCount(n);
+        System.out.println("The head counter has been reset to: " +
+                headcounter.toString());
+        System.out.println("The tail counter has been reset to: " + 
+                tailcounter.toString()); 
+    }
+    
+    public void coinToss(int numTosses) {
+        Random r = new Random();
+        for (int i = 1; i <= numTosses; i++){
+            tails = r.nextBoolean();
+            if (tails == true) { 
+                heads = false;
+                tailcounter.increaseCount();            
+            } else {
+                heads = true;
+                headcounter.increaseCount();
+            }
+        }
     }
     
     public static void main(String[] args) {
         
-        int totalHeads = 0;
-        int totalTails = 0;
-        
         GenericCoin coin1 = new GenericCoin();
-        System.out.println("Now checking coin 1.");
-        checkCoin();
+        GenericCoin coin2 = new GenericCoin();
+        System.out.println("Now checking coin1.");
+        coin1.checkCoin();
+        coin1.coinToss(1);
+        System.out.println("Coin1 after toss: ");
+        coin1.checkCoin();
         
-        for (int i = 1; i < 11; i++) {
-            System.out.println("Flipping coin..");
-            coinToss();
-            checkCoin();
-        }
+        System.out.println("************");
+        System.out.println("Now checking coin2.");
+        coin2.checkCoin();
+        
+        //insert user input
+        
+        coin2.reset();
+        System.out.println("Now tossing coin2 15 times");
+        coin2.coinToss(15);
+        
         System.out.printf("Total number of heads: %s\n", 
-                headcounter.toString());
+                coin2.checkHeadCounter());
         System.out.printf("Total number of tails: %s\n", 
-                tailcounter.toString());
-    
-    }
-    
-    
-    
-    
-    
+                coin2.checkTailCounter());
+        
+        System.out.printf("*********\n");
+        System.out.printf("Coin 1 has had %s heads.\n", 
+                coin1.checkHeadCounter());
+        System.out.printf("Coin 1 has had %s tails.\n", 
+                coin1.checkTailCounter());   
+    } 
 }
