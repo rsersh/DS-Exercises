@@ -1,2 +1,6 @@
 These are just files that I am creating for a data structures book that I am reading.
 Linger at risk of great boredom.
+
+A few of the more reusable classes so far:
+	Counter
+	GenericCoin
